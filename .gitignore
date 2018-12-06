@@ -2,8 +2,8 @@
 .directory
 FrontEnd/node_modules
 FrontEnd/.idea
-BackEnd/node_modules
-BackEnd/.idea
-BackEnd/build
-BackEnd/yarn.lock
+backend/node_modules
+backend/.idea
+backend/build
+backend/yarn.lock
 
