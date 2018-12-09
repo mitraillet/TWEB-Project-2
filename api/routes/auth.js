@@ -4,13 +4,9 @@ const passportLocal = require('passport-local');
 const passportJWT = require('passport-jwt');
 const jwt = require('jsonwebtoken');
 const { jwtOptions } = require('../config');
+const mongoClient = require('../mongo');
+const { dbOptions } = require('../config');
 
-const USER = {
-  id: '123456789',
-  email: 'admin@example.com',
-  username: 'admin',
-  password: 'admin',
-}
 
 const router = express.Router();
 const LocalStrategy = passportLocal.Strategy;
@@ -19,15 +15,47 @@ const ExtractJwt = passportJWT.ExtractJwt;
 
 passport.use(new LocalStrategy(
   {
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
   },
   (username, password, done) => {
     // here you should make a database call
-    if (username === USER.username && password === USER.password) {
-      return done(null, USER);
-    }
-    return done(null, false);
+
+    let userInfoToSend=[];
+    mongoClient.connect(dbOptions.dbUrl, function(err, db) {
+
+      if (err) throw err;
+      var dbo = db.db(dbOptions.dbName);
+      dbo.collection("Users").findOne({ "email":  username}).then(function(dataUser) {
+        //if user not found
+        if(!dataUser) {
+          return done(null, false);
+        }
+        else {
+          console.log(dataUser);
+          user = dataUser;
+
+          if(password === dataUser.password)
+          {
+
+            userInfoToSend.push({"firstName":dataUser.firstName, "lastName":dataUser.lastName,"email":dataUser.email, "compagny":dataUser.compagny});
+
+
+            return done(null, userInfoToSend);
+
+          }
+          //if password is not correct return 401
+          else
+          {
+            return done(null, false);
+
+          }
+        }
+
+      });
+
+    });
+
   },
 ));
 
@@ -46,7 +74,7 @@ passport.use(new JWTStrategy(
 ));
 
 router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
-  const { password, ...user } = req.user;
+  const { ...user } = req.user;
   const token = jwt.sign({ userId: user.id }, jwtOptions.secret);
   res.send({ user, token });
 });

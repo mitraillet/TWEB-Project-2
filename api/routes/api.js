@@ -11,8 +11,10 @@ const router = express.Router();
 const authenticated = () => passport.authenticate('jwt', { session: false });
 const user = [];
 
-router.get('/public', (req, res) => {
-  res.send({ message: 'Hey this is a public message!' })
+router.post('/public', (req, res) => {
+  res.send({ message: 'Hey this is a public message!' });
+
+
 })
 
 router.post('/register', (req, res) => {
