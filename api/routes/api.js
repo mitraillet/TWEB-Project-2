@@ -17,7 +17,7 @@ router.get('/public', (req, res) => {
 
 router.post('/register', (req, res) => {
 
-  const { firstName, lastName, email, compagny,password,  passwordConfirmation } = req.body;
+  const { firstName, lastName, email, compagny,password } = req.body;
 
 
 
