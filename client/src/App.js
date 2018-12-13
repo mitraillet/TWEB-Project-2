@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { AuthContext } from './AuthProvider';
-import { Button, FormGroup, FormControl, ControlLabel, Checkbox, Col, Form, Well } from 'react-bootstrap';
+import { Button, FormGroup, FormControl, Checkbox, TextField } from '@material-ui/core';
 
-const inputStyles = { maxWidth: 300, margin: 'auto', height: 50, 'font-size': 20 };
+const inputStyles = { maxWidth: 300, margin: 'auto', marginTop: 10, height: 50, fontSize: 20 };
 const wellStyles = { maxWidth: 500, margin: 'auto'};
 
 const HomePage = () => (
@@ -28,7 +28,10 @@ const LoginPage = () => {
         if (user) {
           return <Redirect to="/" />;
         }
-
+        let errorTemplate;
+        if (error) {
+          errorTemplate = <row className="text-center alert alert-danger">{error}</row>;
+        }
         const onSubmit = (e) => {
           e.preventDefault();
           signIn({ username, password });
@@ -36,50 +39,54 @@ const LoginPage = () => {
 
         return (
           <React.Fragment>
-            <Well style={wellStyles} className="mt-1">
+            <React.Fragment style={wellStyles} className="mt-1">
               <h1 className="text-center">Login</h1>
-              <Form horizontal onSubmit={onSubmit}>
-                <FormGroup componentClass={ControlLabel}>
-                  <Col>
-                    <FormControl type="text" placeholder="Username" 
-                      value={username}
-                      style={inputStyles}
-                      onChange={e => setUsername(e.target.value)}/>
-                  </Col>
-                </FormGroup>
-
+              <form horizontal onSubmit={onSubmit}>    
                 <FormGroup>
-                  <Col lg>
-                    <FormControl type="password" placeholder="Password" 
-                      value={password}
-                      style={inputStyles}
-                      onChange={e => setPassword(e.target.value)} />
-                  </Col>
+                  <TextField
+                    id="outlined-full-width"
+                    label="Username"
+                    style={inputStyles}
+                    placeholder="Username" 
+                    value={username}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    onChange={e => setUsername(e.target.value)}
+                    />
+
+                  <TextField type="password" 
+                    label="Password"
+                    style={inputStyles}
+                    placeholder="Password"
+                    value={password}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    onChange={e => setPassword(e.target.value)} />
                 </FormGroup>
 
-                <Col className="text-center alert alert-danger">
-                  {error}
-                </Col>
+                  {errorTemplate}
 
                 <FormGroup className="text-center">
-                  <Col>
+                  <row>
                     <Checkbox>Remember me</Checkbox>
-                  </Col>
+                  </row>
                 </FormGroup>
 
                 <FormGroup className="text-center">
-                  <Col>
+                  <row>
                     <Button type="submit">Se connecter</Button>
-                  </Col>
+                  </row>
                 </FormGroup>
 
                 <FormGroup className="text-center">
-                  <Col>
+                  <row>
                     <a href="#.com" >Vous n’avez pas de compte ? Inscrivez-vous</a>
-                  </Col>
+                  </row>
                 </FormGroup>
-              </Form>
-            </Well>
+              </form>
+            </React.Fragment>
           </React.Fragment>
         )
       }}
