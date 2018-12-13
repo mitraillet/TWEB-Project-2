@@ -37,9 +37,9 @@ class AuthProvider extends Component {
     }
   }
 
-  signIn = ({ username, password }) => {
+  signIn = ({ email, password }) => {
     // Implement me !
-    axios.post('/auth/login', { username, password })
+    axios.post('/auth/login', { email, password })
       .then(response => {
         const { user, token } = response.data;
         window.localStorage.setItem('token', token);
@@ -47,7 +47,7 @@ class AuthProvider extends Component {
       })
       .catch(error => {
         console.error(error);
-        this.setState({ error: 'Invalid username or password' });
+        this.setState({ error: 'Invalid email or password' });
       })
   }
 

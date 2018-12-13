@@ -15,18 +15,17 @@ const ExtractJwt = passportJWT.ExtractJwt;
 
 passport.use(new LocalStrategy(
   {
-    usernameField: 'email',
+    emailField: 'email',
     passwordField: 'password',
   },
-  (username, password, done) => {
+  (email, password, done) => {
     // here you should make a database call
-
     let userInfoToSend=[];
     mongoClient.connect(dbOptions.dbUrl, function(err, db) {
 
       if (err) throw err;
       var dbo = db.db(dbOptions.dbName);
-      dbo.collection("Users").findOne({ "email":  username}).then(function(dataUser) {
+      dbo.collection("Users").findOne({ "email":  email}).then(function(dataUser) {
         //if user not found
         if(!dataUser) {
           return done(null, false);
@@ -74,7 +73,7 @@ passport.use(new JWTStrategy(
 ));
 
 router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
-  const { ...user } = req.user;
+  const {password, ...user } = req.user;
   const token = jwt.sign({ userId: user.id }, jwtOptions.secret);
   res.send({ user, token });
 });

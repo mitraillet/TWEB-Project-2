@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { AuthContext } from './AuthProvider';
-import { Button, FormGroup, FormControl, Checkbox, TextField } from '@material-ui/core';
+import { Button, FormGroup, FormControlLabel, Checkbox, TextField } from '@material-ui/core';
 
-const inputStyles = { maxWidth: 300, margin: 'auto', marginTop: 10, height: 50, fontSize: 20 };
-const wellStyles = { maxWidth: 500, margin: 'auto'};
+
+const inputStyles = { marginTop: 10};
+const buttonStyles = { maxWidth: 300, margin: 'auto'};
+const wellStyles = { maxWidth: 300, margin: 'auto'};
 
 const HomePage = () => (
   <AuthContext>
@@ -18,9 +20,8 @@ const HomePage = () => (
 );
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   return (
     <AuthContext>
       {({ error, user, signIn }) => {
@@ -30,63 +31,63 @@ const LoginPage = () => {
         }
         let errorTemplate;
         if (error) {
-          errorTemplate = <row className="text-center alert alert-danger">{error}</row>;
+          errorTemplate = <p className="text-center alert alert-danger mt-2">{error}</p>;
         }
         const onSubmit = (e) => {
           e.preventDefault();
-          signIn({ username, password });
+          signIn({ email, password });
         };
 
         return (
           <React.Fragment>
-            <React.Fragment style={wellStyles} className="mt-1">
+            <form style={wellStyles} className="mt-1" onSubmit={onSubmit}>
               <h1 className="text-center">Login</h1>
-              <form horizontal onSubmit={onSubmit}>    
                 <FormGroup>
                   <TextField
-                    id="outlined-full-width"
-                    label="Username"
-                    style={inputStyles}
-                    placeholder="Username" 
-                    value={username}
+                    required
+                    id="outlined-email-input"
+                    label="Email"
+                    value={email}
                     fullWidth
-                    margin="normal"
                     variant="outlined"
-                    onChange={e => setUsername(e.target.value)}
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    style={inputStyles}
+                    onChange={e => setEmail(e.target.value)}
                     />
 
-                  <TextField type="password" 
+                  <TextField
+                    required
+                    type="password"
+                    id="outlined-required" 
                     label="Password"
-                    style={inputStyles}
-                    placeholder="Password"
                     value={password}
                     fullWidth
-                    margin="normal"
                     variant="outlined"
+                    style={inputStyles}
                     onChange={e => setPassword(e.target.value)} />
                 </FormGroup>
 
                   {errorTemplate}
 
-                <FormGroup className="text-center">
-                  <row>
-                    <Checkbox>Remember me</Checkbox>
-                  </row>
+                <FormGroup>
+                  <FormControlLabel 
+                      control={
+                        <Checkbox
+                        color="primary" />
+                      }
+                      label="Remember me"
+                  />
                 </FormGroup>
 
-                <FormGroup className="text-center">
-                  <row>
-                    <Button type="submit">Se connecter</Button>
-                  </row>
+                <FormGroup>
+                  <Button variant="contained" type="submit" style={buttonStyles} >
+                      Se connecter
+                  </Button>
+                  <a href="#.com">Vous n’avez pas de compte ? Inscrivez-vous</a>
                 </FormGroup>
-
-                <FormGroup className="text-center">
-                  <row>
-                    <a href="#.com" >Vous n’avez pas de compte ? Inscrivez-vous</a>
-                  </row>
-                </FormGroup>
-              </form>
-            </React.Fragment>
+            </form>
           </React.Fragment>
         )
       }}
