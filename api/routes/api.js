@@ -8,7 +8,7 @@ var validator = require("email-validator");
 
 
 const router = express.Router();
-const authenticated = () => passport.authenticate('jwt', { session: false });
+const authenticated = passport.authenticate('jwt', { session: false });
 const user = [];
 
 router.post('/public', (req, res) => {
@@ -59,11 +59,11 @@ router.post('/register', (req, res) => {
 
 })
 
-router.get('/private', authenticated(), (req, res) => {
+router.get('/private', authenticated, (req, res) => {
   res.send({ message: 'Hey this is a private message!' });
 })
 
-router.get('/me', authenticated(), (req, res) => {
+router.get('/me', authenticated, (req, res) => {
   res.send({ user: req.user });
 })
 

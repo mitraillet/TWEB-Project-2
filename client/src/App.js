@@ -12,7 +12,7 @@ const HomePage = () => (
   <AuthContext>
     {({ signOut }) => (
       <div>
-        <h1>Welcome !</h1>
+        <h1>Welcome!</h1>
         <Button onClick={signOut}>LOGOUT</Button>
       </div>
     )}
@@ -20,7 +20,7 @@ const HomePage = () => (
 );
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   return (
     <AuthContext>
@@ -33,9 +33,11 @@ const LoginPage = () => {
         if (error) {
           errorTemplate = <p className="text-center alert alert-danger mt-2">{error}</p>;
         }
+        
         const onSubmit = (e) => {
           e.preventDefault();
-          signIn({ email, password });
+          console.log(username, password)
+          signIn({ username, password });
         };
 
         return (
@@ -47,19 +49,20 @@ const LoginPage = () => {
                     required
                     id="outlined-email-input"
                     label="Email"
-                    value={email}
+                    value={username}
                     fullWidth
                     variant="outlined"
                     type="email"
                     name="email"
                     autoComplete="email"
                     style={inputStyles}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => setUsername(e.target.value)}
                     />
 
                   <TextField
                     required
                     type="password"
+                    name="password"
                     id="outlined-required" 
                     label="Password"
                     value={password}
