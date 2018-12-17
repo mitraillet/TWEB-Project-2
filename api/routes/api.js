@@ -21,7 +21,7 @@ router.post('/project',authenticated, (req, res)  => {
   const project = [];
   const { projectName, description, amount, timeEstimated, technologies, deadline} = req.body;
 
-  if(projectName== null || amount<0 || timeEstimated <0 || description== null || technologies == null || deadline == null)
+  if(projectName== null || amount<0 || timeEstimated <0 || description== null || technologies == null || deadline == null|| status== null)
   {
     res.sendStatus(422);
     return
@@ -29,7 +29,7 @@ router.post('/project',authenticated, (req, res)  => {
   }
 
 
-  project.push({"projectName":projectName, "amount":amount,"description":description,"timeEstimated":timeEstimated, "technologies":technologies,"deadline":deadline});
+  project.push({"projectName":projectName, "amount":amount,"description":description,"timeEstimated":timeEstimated, "technologies":technologies,"deadline":deadline, "status":status});
 
   mongoClient.connect(dbOptions.dbUrl, function(err, db) {
 
@@ -63,6 +63,12 @@ router.put('/project/:id',authenticated, (req, res)  => {
     let projectData = null;
 
     var o_id = new mongoClient.ObjectID(req.params.id);
+
+    if(o_id==null)
+    {
+      res.sendStatus(404);
+      return
+    }
 
 
     //TODO check if date < now
