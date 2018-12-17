@@ -13,16 +13,13 @@ const user = [];
 
 router.get('/public', (req, res) => {
   res.send({ message: 'Hey this is a public message!' });
-
-
 })
 
-router.post('/project', (req, res)  => {
+
+
+router.post('/project',authenticated, (req, res)  => {
   const project = [];
   const { projectName, description, amount, timeEstimated, technologies, deadline} = req.body;
-
-
-
 
   if(projectName== null || amount<0 || timeEstimated <0 || description== null || technologies == null || deadline == null)
   {
@@ -56,7 +53,7 @@ router.post('/project', (req, res)  => {
 
 });
 
-router.put('/project/:id', (req, res)  => {
+router.put('/project/:id',authenticated, (req, res)  => {
   const project = [];
 
   mongoClient.connect(dbOptions.dbUrl, function(err, db) {
