@@ -19,7 +19,6 @@ export default {
         lastName: u.lastName,
         email: u.email,
         company: u.company,
-        password: u.password,
         projectsProposed: u.projectsProposed,
         applications: u.applications
       }));
@@ -48,21 +47,34 @@ export default {
         });
       });
     },
-    updateUser: async (parent, { _id, user }, context, info) => {
-      return new Promise((resolve, reject) => {
-        User.findByIdAndUpdate(_id, { $set: { ...user } }, { new: true }).exec(
-            (err, res) => {
-              err ? reject(err) : resolve(res);
-            }
-        );
-      });
-    },
-    deleteUser: async (parent, { _id }, context, info) => {
-      return new Promise((resolve, reject) => {
-        User.findByIdAndDelete(_id).exec((err, res) => {
-          err ? reject(err) : resolve(res);
+    updateUser: async (parent, { _id, user }, { req }, info) => {
+      if (req.session.userId) {
+        return new Promise((resolve, reject) => {
+          User.findByIdAndUpdate(_id, {$set: {...user}}, {new: true}).exec(
+              (err, res) => {
+                err ? reject(err) : resolve(res);
+              }
+          );
         });
-      });
+      }
+      else
+      {
+        throw new Error('You must be logged in to perform this action');
+      }
+    },
+    deleteUser: async (parent, { _id }, { req }, info) => {
+
+      if (req.session.userId) {
+        return new Promise((resolve, reject) => {
+          User.findByIdAndDelete(_id).exec((err, res) => {
+            err ? reject(err) : resolve(res);
+          });
+        });
+      }
+      else
+      {
+        throw new Error('You must be logged in to perform this action');
+      }
     },
     login: async (parent, { email, password }, { req }) => {
       let user= await User.findOne({ "email": email }).exec();

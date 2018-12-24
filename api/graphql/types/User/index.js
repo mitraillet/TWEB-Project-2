@@ -5,7 +5,6 @@ export default `
     lastName: String!
     email: String!
     company: String!
-    password: String!
     projectsProposed: [Project!]!
     applications: [Application!]!
 
