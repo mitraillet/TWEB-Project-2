@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ObjectID } from "mongodb";
+import Project from "./Project";
 
 const Schema = mongoose.Schema;
 
@@ -29,6 +30,18 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  projectsProposed: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Project"
+    }
+  ],
+  applications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Application"
+    }
+  ]
 
 });
 

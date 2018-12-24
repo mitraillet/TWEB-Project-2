@@ -1,8 +1,12 @@
 import { mergeTypes } from "merge-graphql-schemas";
 
 import User from "./User/";
+import Project from "./Project/";
+import Application from "./Application";
+import Message from "./Message";
 
-const typeDefs = [User];
+
+const typeDefs = [User, Project, Application, Message];
 
 // NOTE: 2nd param is optional, and defaults to false
 // Only use if you have defined the same type multiple times in

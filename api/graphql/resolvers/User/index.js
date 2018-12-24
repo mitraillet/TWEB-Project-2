@@ -1,4 +1,6 @@
 import User from "../../../server/models/User";
+import Project from "../../../server/models/Project";
+import Application from "../../../server/models/Application";
 
 
 export default {
@@ -17,7 +19,9 @@ export default {
         lastName: u.lastName,
         email: u.email,
         company: u.company,
-        password: u.password
+        password: u.password,
+        projectsProposed: u.projectsProposed,
+        applications: u.applications
       }));
     },
     isLogin: (_, __, { req }) => {
@@ -78,6 +82,14 @@ export default {
 
       return true
 
+    }
+  },
+  User: {
+    projectsProposed: async ({ _id }, args, context, info) => {
+      return await Project.find({ customer: _id });
+    },
+    applications: async ({ _id }, args, context, info) => {
+      return await Application.find({ user: _id });
     }
   }
 };

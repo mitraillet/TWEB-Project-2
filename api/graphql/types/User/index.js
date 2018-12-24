@@ -6,6 +6,9 @@ export default `
     email: String!
     company: String!
     password: String!
+    projectsProposed: [Project!]!
+    applications: [Application!]!
+
   }
 
   type Query {
