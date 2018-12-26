@@ -32,7 +32,7 @@ const ProjectSchema = new Schema({
     },
     status:{
         type: String,
-        enum: ['Proposed', 'Appoved', 'Work in progress', 'Delivered'],
+        enum: ['Proposed', 'Approved', 'Ongoing', 'Delivered'],
         required: true
     },
     deadline:{

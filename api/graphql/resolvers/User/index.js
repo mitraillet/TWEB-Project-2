@@ -3,7 +3,12 @@ import Project from "../../../server/models/Project";
 import Application from "../../../server/models/Application";
 
 
+import {
+  EmailAddress,
+} from '@okgrow/graphql-scalars';
+
 export default {
+  EmailAddress,
   Query: {
     user: async (parent, { _id }, context, info) => {
       return await User.findOne({ _id }).exec();

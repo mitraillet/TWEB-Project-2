@@ -3,7 +3,7 @@ export default `
     _id: String!
     user: User!
     project: Project!
-    status: String!
+    status: AllowedMessageStatus!
     messages: [Message!]!
   }
 
@@ -21,10 +21,16 @@ export default `
   input CreateApplicationInput {
     user: ID!
     project: ID!
-    status: String!
+    status: AllowedMessageStatus!
   }
   
   input UpdateApplicationInput {
-    status: String!
+    status: AllowedMessageStatus!
   } 
+  
+   enum AllowedMessageStatus {
+    Proposed
+    Accepted
+    Refused
+  }
 `;

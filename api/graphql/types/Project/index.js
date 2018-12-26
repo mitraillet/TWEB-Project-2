@@ -1,13 +1,14 @@
 export default `
   scalar DateTime
+  scalar PositiveInt
   type Project {
     _id: String!
     name: String!
-    amount: Int!
+    amount: PositiveInt!
     description: String!
     timeEstimated: DateTime!
     technologies: String!
-    status: String!
+    status: AllowedStatus!
     deadline: DateTime!
     customer: User!,
     applications: [Application!]!
@@ -26,11 +27,11 @@ export default `
 
   input CreateProjectInput {
     name: String!
-    amount: Int!
+    amount: PositiveInt!
     description: String!
     timeEstimated: DateTime!
     technologies: String!
-    status: String!
+    status: AllowedStatus!
     deadline: DateTime!
     customer: ID!,
 
@@ -38,13 +39,20 @@ export default `
   
   input UpdateProjectInput {
     name: String!
-    amount: Int!
+    amount: PositiveInt!
     description: String!
     timeEstimated: DateTime!
     technologies: String!
-    status: String!
+    status: AllowedStatus!
     deadline: DateTime!
   } 
+  
+    enum AllowedStatus {
+    Proposed
+    Approved
+    Ongoing
+    Delivered
+  }
   
   
 

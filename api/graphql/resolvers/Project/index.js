@@ -5,23 +5,13 @@ import Application from "../../../server/models/Application";
 
 import {
     DateTime,
-    NonPositiveInt,
     PositiveInt,
-    NonNegativeInt,
-    NegativeInt,
-    NonPositiveFloat,
-    PositiveFloat,
-    NonNegativeFloat,
-    NegativeFloat,
-    EmailAddress,
-    URL,
-    PhoneNumber,
-    PostalCode,
 } from '@okgrow/graphql-scalars';
 
 
 export default {
     DateTime,
+    PositiveInt,
     Query: {
         project: async (parent, {_id}, context, info) => {
             return await Project.findOne({_id}).exec();

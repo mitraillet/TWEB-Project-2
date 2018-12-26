@@ -18,7 +18,7 @@ const ApplicationSchema = new Schema({
     },
     status:{
         type: String,
-        enum: ['On going Study', 'Accepted', 'Refused'],
+        enum: ['Proposed', 'Accepted', 'Refused'],
         required: true
     },
     messages:{

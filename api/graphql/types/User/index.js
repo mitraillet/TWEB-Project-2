@@ -1,9 +1,11 @@
 export default `
+  scalar EmailAddress
+
   type User {
     _id: String!
     firstName: String!
     lastName: String!
-    email: String!
+    email: EmailAddress!
     company: String!
     projectsProposed: [Project!]!
     applications: [Application!]!
@@ -28,16 +30,16 @@ export default `
   input CreateUserInput {
     firstName: String!
     lastName: String!
-    email: String!
+    email: EmailAddress!
     company: String!
     password: String!
   }
   
   input UpdateUserInput {
-    firstName: String!
-    lastName: String!
-    email: String!
-    company: String!
-    password: String!
+    firstName: String
+    lastName: String
+    email: EmailAddress
+    company: String
+    password: String
   } 
 `;
