@@ -16,7 +16,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 const applicationName = 'TinDev';
-
+/*
+<Button size="large" variant="outlined" onClick={''} style={direStyles} >Mon Profil</Button>
+<Button size="large" variant="outlined" onClick={''} style={direStyles} >Conversation</Button>
+<Button size="large" variant="outlined" onClick={''} style={direStyles} >Mes Projets</Button>
+<Button size="large" variant="outlined" onClick={''} style={direStyles} >Propositions</Button>
+      
+*/
 const styles = theme => ({
   root: {
     width: '100%',

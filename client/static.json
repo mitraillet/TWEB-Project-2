@@ -5,10 +5,10 @@
   },
   "proxies": {
     "/auth/login": {
-      "origin": "https://tweb-te-server-steve-henriquet.herokuapp.com/auth/login"
+      "origin": "https://tindevserver.herokuapp.com/auth/login"
     },
     "/api/me": {
-      "origin": "https://tweb-te-server-steve-henriquet.herokuapp.com/api/me"
+      "origin": "https://tindevserver.herokuapp.com/api/me"
     }
   }
 }

@@ -1,0 +1,4 @@
+node_modules
+.env
+yarnl.lock
+package-lock.json

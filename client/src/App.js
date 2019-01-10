@@ -17,7 +17,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
 
 export default () => (
   <Switch>
-    <ProtectedRoute path="/" exact component={HomePage} />
+    <Route path="/" exact component={HomePage} />
     <Route path="/login" component={LoginPage} />
   </Switch>
 );

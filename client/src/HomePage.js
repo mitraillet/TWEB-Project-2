@@ -9,10 +9,7 @@ const HomePage = () => (
     {({ signOut }) => (
       <div>
         <Button onClick={signOut}>LOGOUT</Button>
-        <Button size="large" variant="outlined" onClick={''} style={direStyles} >Mon Profil</Button>
-        <Button size="large" variant="outlined" onClick={''} style={direStyles} >Conversation</Button>
-        <Button size="large" variant="outlined" onClick={''} style={direStyles} >Mes Projets</Button>
-        <Button size="large" variant="outlined" onClick={''} style={direStyles} >Propositions</Button>
+        
       </div>
     )}
   </AuthContext>
