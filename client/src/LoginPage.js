@@ -14,6 +14,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { NavLink, withRouter } from 'react-router-dom'
 
 const styles = theme => ({
   main: {
@@ -45,7 +46,13 @@ const styles = theme => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
+  navLink: {
+    width: 'auto',
+    marginTop: theme.spacing.unit * 1,
+  }
 });
+
+
 function LoginPage(props) {
   const { classes } = props;
   const [username, setUsername] = useState('');
@@ -113,6 +120,11 @@ function LoginPage(props) {
                   Se connecter
                 </Button>
               </form>
+              <NavLink to='/register'>
+                <Typography className={classes.navLink} component="a" variant="subtitle1">
+                  Vous n’avez pas de compte ? Inscrivez-vous
+                </Typography>
+              </NavLink>
             </Paper>
           </main>
         );
@@ -125,4 +137,4 @@ LoginPage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(LoginPage);
+export default withStyles(styles)(withRouter(LoginPage));
