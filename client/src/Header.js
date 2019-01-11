@@ -4,9 +4,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Paper from '@material-ui/core/Paper';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -77,6 +77,13 @@ const styles = theme => ({
       display: 'none',
     },
   },
+  paper: {
+    padding: theme.spacing.unit / 2,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    backgroundColor: '#3f51b5',
+    cursor: 'pointer'
+  }
 });
 
 class Header extends React.Component {
@@ -105,18 +112,16 @@ class Header extends React.Component {
           ( <React.Fragment>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                  <IconButton color="inherit">
-                    <Badge badgeContent={0} color="secondary">
-                      <MailIcon />
-                    </Badge>
+                  <IconButton color="inherit" onClick={() => window.location = '/conversations'}>
+                    <MailIcon />
                   </IconButton>
-                  <IconButton color="inherit">
+                  <IconButton color="inherit" onClick={() => window.location = '/profil'}>
                     <AccountCircle />
                   </IconButton>
-                  <IconButton color="inherit">
+                  <IconButton color="inherit" onClick={() => window.location = '/projects'}>
                     <Subject />
                   </IconButton>
-                  <IconButton color="inherit">
+                  <IconButton color="inherit" onClick={() => window.location = '/propositions'}>
                     <PlaylistAdd />
                   </IconButton>
                   <IconButton color="inherit" onClick={signOut} >
@@ -141,27 +146,25 @@ class Header extends React.Component {
             onClose={this.handleMobileMenuClose}
           >
             <MenuItem>
-              <IconButton color="inherit">
-                <Badge badgeContent={0} color="secondary">
-                  <MailIcon />
-                </Badge>
+              <IconButton color="inherit" onClick={() => window.location = '/conversations'}>
+                <MailIcon />
               </IconButton>
               <p>Messages</p>
             </MenuItem>
             <MenuItem>
-              <IconButton color="inherit">
+              <IconButton color="inherit" onClick={() => window.location = '/profil'}>
                 <AccountCircle />
               </IconButton>
               <p>Profil</p>
             </MenuItem>
             <MenuItem>
-              <IconButton color="inherit">
+              <IconButton color="inherit" onClick={() => window.location = '/projects'}>
                 <Subject />
               </IconButton>
               <p>Mes Projets</p>
             </MenuItem>
             <MenuItem>
-              <IconButton color="inherit">
+              <IconButton color="inherit" onClick={() => window.location = '/propositions'}>
                 <PlaylistAdd />
               </IconButton>
               <p>Propositions</p>
@@ -179,8 +182,10 @@ class Header extends React.Component {
           <div className={classes.root}>
             <AppBar position="static">
               <Toolbar>
-                <Typography className={classes.title} variant="h3" color="inherit" noWrap>
-                  {applicationName}
+                <Typography className={classes.title} variant="h3" color="inherit" noWrapc onClick={() => window.location = '/'}>
+                  <Paper className={classes.paper} elevation={1} >
+                    {applicationName}
+                  </Paper>
                 </Typography>
                 {isConnectedOption}
               </Toolbar>

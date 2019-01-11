@@ -31,28 +31,28 @@ function HomePage(props) {
       {({ signOut }) => (
         <div className={classes.container}>
           <Paper className={classes.root} elevation={1}>
-            <NavLink to='/profile'>
+            <NavLink to='/profil'>
               <Typography variant="h5" component="h3"> 
                 Mon Profil
               </Typography>
             </NavLink>
           </Paper>
           <Paper className={classes.root} elevation={1}>
-            <NavLink to='/profile'>
+            <NavLink to='/conversations'>
               <Typography variant="h5" component="h3">
-                Conversation
+                Conversations
               </Typography>
             </NavLink>
           </Paper>
           <Paper className={classes.root} elevation={1}>
-            <NavLink to='/profile'>
+            <NavLink to='/projects'>
               <Typography variant="h5" component="h3">
                 Mes Projets
               </Typography>
             </NavLink>
           </Paper>
           <Paper className={classes.root} elevation={1}>
-            <NavLink to='/profile'>
+            <NavLink to='/propositions'>
               <Typography variant="h5" component="h3">
                 Propositions
               </Typography>

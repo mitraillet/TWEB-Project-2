@@ -45,7 +45,7 @@ class AuthProvider extends Component {
   signOut = () => {
     this.props.logout().then(() => {
       this.setState({user : null});
-      window.location.reload();
+      window.location= '/login';
     });
   }
 

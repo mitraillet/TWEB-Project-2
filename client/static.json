@@ -4,11 +4,8 @@
     "/**": "index.html"
   },
   "proxies": {
-    "/auth/login": {
-      "origin": "https://graphql-mongodb-server-mmfplaazsf.now.sh/"
-    },
-    "/api/me": {
-      "origin": "https://graphql-mongodb-server-mmfplaazsf.now.sh/"
+    "/graphql": {
+      "origin": "https://graphql-mongodb-server-mmfplaazsf.now.sh/graphql"
     }
   }
 }
