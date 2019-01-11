@@ -13,7 +13,6 @@ const LoginPage = () => {
   return (
     <AuthContext>
       {({ error, user, signIn }) => {
-
         if (user) {
           return <Redirect to="/" />;
         }
@@ -24,7 +23,6 @@ const LoginPage = () => {
         
         const onSubmit = (e) => {
           e.preventDefault();
-          console.log(username, password)
           signIn({ username, password });
         };
         

@@ -10,6 +10,14 @@ import {
 export default {
   EmailAddress,
   Query: {
+    me: (_, __, { req }) => {
+      if (req.session.userId) {
+        return User.findOne({email: req.session.userId})
+      }
+      else {
+        return null;
+      }
+    },
     user: async (parent, { _id }, context, info) => {
       return await User.findOne({ _id }).exec();
     },
@@ -82,17 +90,12 @@ export default {
       }
     },
     login: async (parent, { email, password }, { req }) => {
-      let user= await User.findOne({ "email": email }).exec();
-      if (user) {
-        if (password=== user.password) {
-          req.session.userId = email;
-          return true;
-        }
-
-        throw new Error('Incorrect password.');
+      let user= await User.findOne({ "email": email });
+      if (!user || password!== user.password) {
+        throw new Error('Invalid email or password');
       }
-
-      throw new Error('No Such User exists.');
+      req.session.userId = email;
+      return user;
     },
     logout:(parent,_, { req }) => {
       req.session.destroy();

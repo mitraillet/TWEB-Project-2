@@ -14,15 +14,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { AuthContext } from './AuthProvider';
 
 const applicationName = 'TinDev';
-/*
-<Button size="large" variant="outlined" onClick={''} style={direStyles} >Mon Profil</Button>
-<Button size="large" variant="outlined" onClick={''} style={direStyles} >Conversation</Button>
-<Button size="large" variant="outlined" onClick={''} style={direStyles} >Mes Projets</Button>
-<Button size="large" variant="outlined" onClick={''} style={direStyles} >Propositions</Button>
-      
-*/
 const styles = theme => ({
   root: {
     width: '100%',
@@ -108,106 +102,114 @@ class Header extends React.Component {
   };
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes } = this.props;
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    return (
+    <AuthContext>
+      {({ user }) => {
+        console.log(user);
+        const { anchorEl, mobileMoreAnchorEl } = this.state;
+        const { classes } = this.props;
+        const isMenuOpen = Boolean(anchorEl);
+        const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-    const isConnectedOption = ({ user}) => { return (user) ? 
-      ( <React.Fragment>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
+        const isConnectedOption = user ? 
+          ( <React.Fragment>
+                <div className={classes.grow} />
+                <div className={classes.sectionDesktop}>
+                  <IconButton color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                      <MailIcon />
+                    </Badge>
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                  <IconButton
+                    aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                </div>
+                <div className={classes.sectionMobile}>
+                  <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+                    <MoreIcon />
+                  </IconButton>
+                </div> 
+              </React.Fragment>
+        ) : null ;
+        
+
+        const renderMenu = (
+          <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMenuOpen}
+            onClose={this.handleMenuClose}
+          >
+            <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+            <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+          </Menu>
+        );
+
+        const renderMobileMenu = (
+          <Menu
+            anchorEl={mobileMoreAnchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMobileMenuOpen}
+            onClose={this.handleMobileMenuClose}
+          >
+            <MenuItem>
               <IconButton color="inherit">
                 <Badge badgeContent={0} color="secondary">
                   <MailIcon />
                 </Badge>
               </IconButton>
+              <p>Messages</p>
+            </MenuItem>
+            <MenuItem>
               <IconButton color="inherit">
                 <Badge badgeContent={0} color="secondary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
-                color="inherit"
-              >
+              <p>Notifications</p>
+            </MenuItem>
+            <MenuItem onClick={this.handleProfileMenuOpen}>
+              <IconButton color="inherit">
                 <AccountCircle />
               </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
-                <MoreIcon />
-              </IconButton>
-            </div> 
-          </React.Fragment>
-    ) : null };
-    
+              <p>Profile</p>
+            </MenuItem>
+          </Menu>
+        );
 
-    const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-      </Menu>
-    );
-
-    const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={this.handleMobileMenuClose}
-      >
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge badgeContent={0} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge badgeContent={0} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-      </Menu>
-    );
-
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-              <MenuIcon />
-            </IconButton>
-            <Typography className={classes.title} variant="h3" color="inherit" noWrap>
-              {applicationName}
-            </Typography>
-            {isConnectedOption}
-          </Toolbar>
-        </AppBar>
-        {renderMenu}
-        {renderMobileMenu}
-      </div>
-    );
+        return (
+          <div className={classes.root}>
+            <AppBar position="static">
+              <Toolbar>
+                <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
+                  <MenuIcon />
+                </IconButton>
+                <Typography className={classes.title} variant="h3" color="inherit" noWrap>
+                  {applicationName}
+                </Typography>
+                {isConnectedOption}
+              </Toolbar>
+            </AppBar>
+            {renderMenu}
+            {renderMobileMenu}
+          </div>
+        );
+      }
+    }
+    </AuthContext>
+    )
   }
 }
 

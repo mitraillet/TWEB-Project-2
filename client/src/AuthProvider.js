@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import gql from 'graphql-tag';
+import { graphql, withApollo, compose } from 'react-apollo';
+
 
 const {
   Provider: AuthContextProvider,
@@ -11,6 +13,7 @@ class AuthProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isConnected: false,
       user: null,
       error: null,
       signIn: this.signIn,
@@ -19,31 +22,19 @@ class AuthProvider extends Component {
   }
 
   componentDidMount() {
-    const token = window.localStorage.getItem('token');
-    if (token) {
-      axios.get('/api/me', {
-        headers: {
-          Authorization: `bearer ${token}`,
-        }
-      })
-        .then(response => {
-          const { user } = response.data;
-          this.setState({ user });
-        })
-        .catch(err => {
-          console.error(err);
-          localStorage.removeItem('token');
-        })
-    }
+    this.props.client.query({
+      query: meQuery
+    }).then(res => {
+      this.setState( {user: res.data.me} )
+    });
   }
 
   signIn = ({ username, password }) => {
-    // Implement me !
-    axios.post('/auth/login', { username, password })
-      .then(response => {
-        const { user, token } = response.data;
-        window.localStorage.setItem('token', token);
-        this.setState({ user });
+    let email = username;
+    this.props.login({
+      variables: { email,password },
+    }).then(response => {
+        this.setState({user : response.data.login});
       })
       .catch(error => {
         console.error(error);
@@ -52,9 +43,10 @@ class AuthProvider extends Component {
 }
 
   signOut = () => {
-    // Implement me !
-    localStorage.removeItem('token');
-    window.location.reload();
+    this.props.logout().then(() => {
+      this.setState({user : null});
+      window.location.reload();
+    });
   }
 
   render() {
@@ -67,5 +59,36 @@ class AuthProvider extends Component {
   }
 }
 
-export { AuthContext };
-export default AuthProvider;
+const loginMutation = gql`
+  mutation($email: String!, $password: String!){
+    login(email: $email, password: $password){
+      firstName
+      lastName
+      email
+      company
+    }
+  }
+`;
+
+const logoutMutation = gql`
+  mutation{
+    logout
+  }
+`;
+
+const meQuery = gql`
+  query {
+    me{
+      firstName
+      lastName
+      email
+      company
+    }
+  }
+`;
+export { AuthContext};
+export default compose(
+  withApollo,
+  graphql(loginMutation, {name: 'login'}),
+  graphql(logoutMutation, {name: 'logout'}),
+  )(AuthProvider);

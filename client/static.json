@@ -5,10 +5,10 @@
   },
   "proxies": {
     "/auth/login": {
-      "origin": "https://tindevserver.herokuapp.com/auth/login"
+      "origin": "https://graphql-mongodb-server-mmfplaazsf.now.sh/"
     },
     "/api/me": {
-      "origin": "https://tindevserver.herokuapp.com/api/me"
+      "origin": "https://graphql-mongodb-server-mmfplaazsf.now.sh/"
     }
   }
 }

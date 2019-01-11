@@ -13,6 +13,7 @@ export default `
   }
 
   type Query {
+    me: User
     user(_id: ID!): User!
     users: [User!]!
     isLogin: String!
@@ -22,7 +23,7 @@ export default `
     createUser(user: CreateUserInput): User!
     updateUser(_id: String!, user: UpdateUserInput!): User!
     deleteUser(_id: String!): User!
-    login(email: String!, password: String!): Boolean!
+    login(email: String!, password: String!):  User!
     logout: Boolean!
     
   }
