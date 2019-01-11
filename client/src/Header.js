@@ -9,11 +9,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import PlaylistAdd from '@material-ui/icons/PlaylistAdd';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Subject from '@material-ui/icons/Subject';
 import { AuthContext } from './AuthProvider';
 
 const applicationName = 'TinDev';
@@ -29,9 +30,9 @@ const styles = theme => ({
     marginRight: 20,
   },
   title: {
-    display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
+      marginLeft: theme.spacing.unit * 10,
     },
   },
   search: {
@@ -80,17 +81,7 @@ const styles = theme => ({
 
 class Header extends React.Component {
   state = {
-    anchorEl: null,
     mobileMoreAnchorEl: null,
-  };
-
-  handleProfileMenuOpen = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleMenuClose = () => {
-    this.setState({ anchorEl: null });
-    this.handleMobileMenuClose();
   };
 
   handleMobileMenuOpen = event => {
@@ -104,11 +95,10 @@ class Header extends React.Component {
   render() {
     return (
     <AuthContext>
-      {({ user }) => {
+      {({ user, signOut }) => {
         console.log(user);
-        const { anchorEl, mobileMoreAnchorEl } = this.state;
+        const {  mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
-        const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
         const isConnectedOption = user ? 
@@ -121,17 +111,16 @@ class Header extends React.Component {
                     </Badge>
                   </IconButton>
                   <IconButton color="inherit">
-                    <Badge badgeContent={0} color="secondary">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                  <IconButton
-                    aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                    aria-haspopup="true"
-                    onClick={this.handleProfileMenuOpen}
-                    color="inherit"
-                  >
                     <AccountCircle />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <Subject />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <PlaylistAdd />
+                  </IconButton>
+                  <IconButton color="inherit" onClick={signOut} >
+                    <ExitToApp />
                   </IconButton>
                 </div>
                 <div className={classes.sectionMobile}>
@@ -142,19 +131,6 @@ class Header extends React.Component {
               </React.Fragment>
         ) : null ;
         
-
-        const renderMenu = (
-          <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMenuOpen}
-            onClose={this.handleMenuClose}
-          >
-            <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-          </Menu>
-        );
 
         const renderMobileMenu = (
           <Menu
@@ -174,17 +150,27 @@ class Header extends React.Component {
             </MenuItem>
             <MenuItem>
               <IconButton color="inherit">
-                <Badge badgeContent={0} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              <p>Notifications</p>
-            </MenuItem>
-            <MenuItem onClick={this.handleProfileMenuOpen}>
-              <IconButton color="inherit">
                 <AccountCircle />
               </IconButton>
-              <p>Profile</p>
+              <p>Profil</p>
+            </MenuItem>
+            <MenuItem>
+              <IconButton color="inherit">
+                <Subject />
+              </IconButton>
+              <p>Mes Projets</p>
+            </MenuItem>
+            <MenuItem>
+              <IconButton color="inherit">
+                <PlaylistAdd />
+              </IconButton>
+              <p>Propositions</p>
+            </MenuItem>
+            <MenuItem onClick= {signOut}>
+              <IconButton color="inherit">
+                <ExitToApp />
+              </IconButton>
+              <p>Déconnexion</p>
             </MenuItem>
           </Menu>
         );
@@ -193,16 +179,12 @@ class Header extends React.Component {
           <div className={classes.root}>
             <AppBar position="static">
               <Toolbar>
-                <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-                  <MenuIcon />
-                </IconButton>
                 <Typography className={classes.title} variant="h3" color="inherit" noWrap>
                   {applicationName}
                 </Typography>
                 {isConnectedOption}
               </Toolbar>
             </AppBar>
-            {renderMenu}
             {renderMobileMenu}
           </div>
         );
