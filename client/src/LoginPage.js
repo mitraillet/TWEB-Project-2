@@ -14,7 +14,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { NavLink, withRouter } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   main: {
@@ -121,7 +121,7 @@ function LoginPage(props) {
                 </Button>
               </form>
               <NavLink to='/register'>
-                <Typography className={classes.navLink} component="a" variant="subtitle1">
+                <Typography className={classes.navLink} component="p" variant="subtitle1">
                   Vous n’avez pas de compte ? Inscrivez-vous
                 </Typography>
               </NavLink>
