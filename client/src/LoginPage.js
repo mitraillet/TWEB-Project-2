@@ -61,7 +61,9 @@ function LoginPage(props) {
     <AuthContext>
       {({ error, user, signIn }) => {
         if (user) {
-          return <Redirect to="/" />;
+          let maChaine = props.location.search;
+          maChaine = maChaine.replace("?fromUrl=", "");
+          return <Redirect to={maChaine} />;
         }
         let errorTemplate;
         if (error) {

@@ -16,6 +16,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Subject from '@material-ui/icons/Subject';
 import { AuthContext } from './AuthProvider';
+import { NavLink, withRouter } from 'react-router-dom';
 
 const applicationName = 'TinDev';
 const styles = theme => ({
@@ -103,7 +104,6 @@ class Header extends React.Component {
     return (
     <AuthContext>
       {({ user, signOut }) => {
-        console.log(user);
         const {  mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -112,10 +112,12 @@ class Header extends React.Component {
           ( <React.Fragment>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                  <IconButton color="inherit" onClick={() => window.location = '/conversations'}>
+                  <NavLink to='/conversations'>
+                  <IconButton color="inherit">
                     <MailIcon />
                   </IconButton>
-                  <IconButton color="inherit" onClick={() => window.location = '/profil'}>
+                  </NavLink>
+                  <IconButton color="inherit" onClick={() =>this.props.history.push('/conversations')}>
                     <AccountCircle />
                   </IconButton>
                   <IconButton color="inherit" onClick={() => window.location = '/projects'}>
@@ -145,26 +147,26 @@ class Header extends React.Component {
             open={isMobileMenuOpen}
             onClose={this.handleMobileMenuClose}
           >
-            <MenuItem>
-              <IconButton color="inherit" onClick={() => window.location = '/conversations'}>
+            <MenuItem onClick={() => window.location = '/conversations'}>
+              <IconButton color="inherit">
                 <MailIcon />
               </IconButton>
               <p>Messages</p>
             </MenuItem>
-            <MenuItem>
-              <IconButton color="inherit" onClick={() => window.location = '/profil'}>
+            <MenuItem onClick={() => window.location = '/profil'}>
+              <IconButton color="inherit">
                 <AccountCircle />
               </IconButton>
               <p>Profil</p>
             </MenuItem>
-            <MenuItem>
-              <IconButton color="inherit" onClick={() => window.location = '/projects'}>
+            <MenuItem onClick={() => window.location = '/projects'}>
+              <IconButton color="inherit" >
                 <Subject />
               </IconButton>
               <p>Mes Projets</p>
             </MenuItem>
-            <MenuItem>
-              <IconButton color="inherit" onClick={() => window.location = '/propositions'}>
+            <MenuItem onClick={() => window.location = '/propositions'}>
+              <IconButton color="inherit">
                 <PlaylistAdd />
               </IconButton>
               <p>Propositions</p>
@@ -204,4 +206,4 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(withRouter(Header));
