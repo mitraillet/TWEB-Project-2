@@ -16,7 +16,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Subject from '@material-ui/icons/Subject';
 import { AuthContext } from './AuthProvider';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const applicationName = 'TinDev';
 const styles = theme => ({
@@ -112,18 +112,16 @@ class Header extends React.Component {
           ( <React.Fragment>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                  <NavLink to='/conversations'>
-                  <IconButton color="inherit">
+                  <IconButton color="inherit"onClick={() =>this.props.history.push('/conversations')}>
                     <MailIcon />
                   </IconButton>
-                  </NavLink>
-                  <IconButton color="inherit" onClick={() =>this.props.history.push('/conversations')}>
+                  <IconButton color="inherit" onClick={() =>this.props.history.push('/profil')}>
                     <AccountCircle />
                   </IconButton>
-                  <IconButton color="inherit" onClick={() => window.location = '/projects'}>
+                  <IconButton color="inherit" onClick={() =>this.props.history.push('/projects')}>
                     <Subject />
                   </IconButton>
-                  <IconButton color="inherit" onClick={() => window.location = '/propositions'}>
+                  <IconButton color="inherit" onClick={() =>this.props.history.push('/propositions')}>
                     <PlaylistAdd />
                   </IconButton>
                   <IconButton color="inherit" onClick={signOut} >
@@ -147,25 +145,25 @@ class Header extends React.Component {
             open={isMobileMenuOpen}
             onClose={this.handleMobileMenuClose}
           >
-            <MenuItem onClick={() => window.location = '/conversations'}>
+            <MenuItem onClick={() =>this.props.history.push('/conversations')}>
               <IconButton color="inherit">
                 <MailIcon />
               </IconButton>
               <p>Messages</p>
             </MenuItem>
-            <MenuItem onClick={() => window.location = '/profil'}>
+            <MenuItem onClick={() =>this.props.history.push('/profil')}>
               <IconButton color="inherit">
                 <AccountCircle />
               </IconButton>
               <p>Profil</p>
             </MenuItem>
-            <MenuItem onClick={() => window.location = '/projects'}>
+            <MenuItem onClick={() =>this.props.history.push('/projects')}>
               <IconButton color="inherit" >
                 <Subject />
               </IconButton>
               <p>Mes Projets</p>
             </MenuItem>
-            <MenuItem onClick={() => window.location = '/propositions'}>
+            <MenuItem onClick={() =>this.props.history.push('/propositions')}>
               <IconButton color="inherit">
                 <PlaylistAdd />
               </IconButton>
