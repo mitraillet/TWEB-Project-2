@@ -111,6 +111,9 @@ export default {
     },
     applications: async ({ _id }, args, context, info) => {
       return await Application.find({ user: _id });
+    },
+    projectsApplicable: async ({_id}, args, context, info) => {
+      return await Project.find(  { $and: [ { customer: { $ne: _id}}, {'applications.user._id' : {$ne: _id}}]} );
     }
   }
 };
