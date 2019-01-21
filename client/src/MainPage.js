@@ -3,8 +3,11 @@ import { AuthContext } from './AuthProvider';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { NavLink, withRouter } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 const styles = theme => ({
   root: {
@@ -29,127 +32,227 @@ const styles = theme => ({
   }
 });
 
-function MainPage(props) {
-  const { classes } = props;
+//
+class MainPage extends React.Component {
 
-  return (
-    <AuthContext>
-      {({ signOut }) => (
-        <div className={classes.container}>
+  state = {
+    index: 0,
+    project: {
+      name: 'name',
+      amount: 'amount',
+      description: 'description',
+      timeEstimated: 'timeEstimated',
+      status: 'status',
+      deadline: 'deadline',
+      customer: '{firstName: firstName, lastName: lastName}',
+      technologies: 'react, GraphQL',
+    },
+    technologies: 'react, GraphQL',
+    pageLoaded: false
+  }
 
-          {
-            //prev button
-          }
-          <Paper className={classes.root}  elevation={1}>
-            <NavLink to='/'>
-              <Typography variant="h5" component="h3"> 
-                  Prev
+  onClickPrev = (data) => {
+    
+    this.setState({
+      index: ((this.state.index > 0 ? this.state.index : data.me.projectsApplicable.length)-1 ) % data.me.projectsApplicable.length,
+      project: data.me.projectsApplicable[this.state.index],
+      technologies: this.state.project.technologies,
+      pageLoaded: true
+    });
+  }
+
+  onClickNext = (data) => {
+    
+    this.setState({
+      index: (this.state.index +1 ) % data.me.projectsApplicable.length,
+      project: data.me.projectsApplicable[this.state.index],
+      technologies: this.state.project.technologies,
+      pageLoaded: true
+    });
+  }
+
+
+  mainPage() {
+    const { classes } = this.props;
+
+    const projectsListRecuperation = () => (
+      <Query
+        query={projectsList}
+      >
+        {({ data, loading, error }) => {
+          if (loading) return (
+            <Paper className={classes.root} elevation={1}>
+              <Typography variant="h5" component="h3">
+                  Loading...
               </Typography>
-            </NavLink>
-          </Paper>          
+            </Paper>
+          );
 
-          {//globale
-          }
-          <Paper className={classes.root} elevation={1}>
+          if (error || data.me.projectsApplicable === null) return (
+            <Paper className={classes.root} elevation={1}>
+              <Typography variant="h5" component="h3">
+                  Error...
+              </Typography>
+            </Paper>
+          );
 
-            {//first 2 button
-            }
+          if(data.me && data.me.projectsApplicable && data.me.projectsApplicable.length === 0) return (
+            <Paper className={classes.root} elevation={1}>
+              <Typography variant="h5" component="h3">
+                  Not project available, come back later!
+              </Typography>
+            </Paper>
+          );
+
+          if(!this.state.pageLoaded) this.onClickPrev(data);
+
+          return (
             <div className={classes.container}>
 
-              {//two horiz button
+            {
+              //prev button
+            }
+            <Paper className={classes.root}  elevation={1}>
+              <Button onClick={() => this.onClickPrev(data)}>
+                <Typography variant="h5" component="h3"> 
+                    Prev
+                </Typography>
+              </Button>
+            </Paper>          
+
+            {//globale
+            }
+            <Paper className={classes.root} elevation={1}>
+
+              {//first 2 button
+              }
+              <div className={classes.container}>
+
+                {//two horiz button
+                }
+                <Paper className={classes.root} elevation={1}>
+                    <NavLink to='#'>
+                    <Typography variant="h5" component="h3"> 
+                        Non interessé
+                    </Typography>
+                    </NavLink>
+                </Paper>
+                <Paper className={classes.root} elevation={1}>
+                    <NavLink to='#'>
+                    <Typography variant="h5" component="h3">
+                        Mettre en attente
+                    </Typography>
+                    </NavLink>
+                </Paper>
+              </div>
+
+              
+              {//partie centrale
+              }
+              <Paper className={classes.root}>
+                <Paper className={classes.root} elevation={1}>
+                    <Typography variant="h5" component="h3">
+                      {this.state.project.name}
+                    </Typography>
+                </Paper>
+                <Paper className={classes.root} elevation={1}>
+                    <Typography variant="h5" component="h3">
+                      {this.state.project.description}
+                    </Typography>
+                </Paper>
+
+                <div className={classes.container}>
+                  <Paper className={classes.root} elevation={1}>
+                      <Typography variant="h5" component="h3">
+                        {this.state.project.amount}
+                      </Typography>
+                  </Paper>
+                  <Paper className={classes.root} elevation={1}>
+                      <Typography variant="h5" component="h3">
+                        {this.state.project.customer.firstName},<br /> {this.state.project.customer.lastName}
+                      </Typography>
+                  </Paper>
+                </div>
+
+              
+                <div className={classes.container}>
+                  
+                  {this.state.technologies.split(",").map((value) => {
+                    return (
+                      <Paper className={classes.root} elevation={1}>
+                        <Typography variant="h5" component="h3">
+                            {value}
+                        </Typography>
+                    </Paper>
+                    )
+                  })}
+                </div>
+
+              </Paper>
+
+              {//last button
               }
               <Paper className={classes.root} elevation={1}>
                   <NavLink to='/'>
-                  <Typography variant="h5" component="h3"> 
-                      Non interessé
+                  <Typography variant="h5" component="h3">
+                      Entrer en relation
                   </Typography>
                   </NavLink>
               </Paper>
-              <Paper className={classes.root} elevation={1}>
-                  <NavLink to='/'>
-                  <Typography variant="h5" component="h3">
-                      Mettre en attente
-                  </Typography>
-                  </NavLink>
-              </Paper>
-            </div>
-
-            
-            {//partie centrale
-            }
-            <Paper className={classes.root}>
-              <Paper className={classes.root} elevation={1}>
-                  <Typography variant="h5" component="h3">
-                      Titre
-                  </Typography>
-              </Paper>
-              <Paper className={classes.root} elevation={1}>
-                  <Typography variant="h5" component="h3">
-                      Description
-                  </Typography>
-              </Paper>
-
-              <div className={classes.container}>
-                <Paper className={classes.root} elevation={1}>
-                    <Typography variant="h5" component="h3">
-                        Budget
-                    </Typography>
-                </Paper>
-                <Paper className={classes.root} elevation={1}>
-                    <Typography variant="h5" component="h3">
-                        Mandant
-                    </Typography>
-                </Paper>
-              </div>
-
-
-              <div className={classes.container}>
-                <Paper className={classes.root} elevation={1}>
-                    <Typography variant="h5" component="h3">
-                        JS
-                    </Typography>
-                </Paper>
-                <Paper className={classes.root} elevation={1}>
-                    <Typography variant="h5" component="h3">
-                        React
-                    </Typography>
-                </Paper>
-                <Paper className={classes.root} elevation={1}>
-                    <Typography variant="h5" component="h3">
-                        GraphQL
-                    </Typography>
-                </Paper>
-              </div>
-
             </Paper>
 
-            {//last button
+            {
+              //next button
             }
             <Paper className={classes.root} elevation={1}>
-                <NavLink to='/'>
-                <Typography variant="h5" component="h3">
-                    Entrer en relation
+              <Button onClick={() => this.onClickNext(data)}>
+                <Typography variant="h5" component="h3"> 
+                    Next
                 </Typography>
-                </NavLink>
+              </Button>
             </Paper>
-          </Paper>
 
-          {
-            //prev button
-          }
-          <Paper className={classes.root} elevation={1}>
-            <NavLink to='/'>
-              <Typography variant="h5" component="h3"> 
-                  Next
-              </Typography>
-            </NavLink>
-          </Paper>
+          </div>
+          );
+        }
+        }
+      </Query>
+    );
 
-        </div>
-      )}
+    return (
+      <AuthContext>
+        {() => {
+          return projectsListRecuperation();
+
+        }}
       </AuthContext>
-  );
+    )
+  }
+
+  render() {
+    return this.mainPage();
+  }
 }
+
+const projectsList = gql`
+query {
+  me{
+    projectsApplicable{
+        name,
+        amount,
+        description,
+        timeEstimated,
+        status,
+        deadline,
+        customer {
+          firstName,
+          lastName
+        },
+        technologies
+    }
+  }
+}
+`;
 
 MainPage.propTypes = {
   classes: PropTypes.object.isRequired,

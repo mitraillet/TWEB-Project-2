@@ -9,7 +9,7 @@ export default `
     company: String!
     projectsProposed: [Project!]!
     applications: [Application!]!
-
+    projectsApplicable: [Project!]!
   }
 
   type Query {

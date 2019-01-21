@@ -41,6 +41,12 @@ const UserSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "Application"
     }
+  ],
+  projectsApplicable: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Project"
+    }
   ]
 
 });

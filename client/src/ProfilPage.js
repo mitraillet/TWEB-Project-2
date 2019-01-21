@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { NavLink, withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import { withRouter } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 const styles = theme => ({
   root: {
@@ -31,51 +33,90 @@ const styles = theme => ({
 function ProfilPage(props) {
   const { classes } = props;
 
+  const profilRecuperation = () => (
+    <Query
+      query={profil}
+    >
+      {({ data, loading }) => {
+        if (loading) return <p>Loading...</p>;
+
+        let firstName = "...";
+        let mail = "...";
+        let lastName = "...";
+        let company = "...";
+        if(data.me.firstName)
+          firstName = data.me.firstName;
+        if(data.me.lastName)
+          lastName = data.me.lastName;
+        if(data.me.email)
+          mail = data.me.email;
+        if(data.me.company)
+          company = data.me.company;
+
+        return (
+          <div className={classes.container}>
+            <Paper className={classes.root} elevation={1}>
+              <Paper className={classes.root} elevation={1}>
+                <Typography variant="h5" component="h3"> 
+                Mon Profil
+                </Typography>
+              </Paper>
+              <Paper className={classes.root} elevation={1}>
+                <TextField label="First Name" value={firstName} />
+              </Paper>
+              <Paper className={classes.root} elevation={1}>
+                <TextField label="Last Name" value={lastName} />
+              </Paper>
+              <Paper className={classes.root} elevation={1}>
+                <TextField label="Email" value={mail} />
+              </Paper>
+              <Paper className={classes.root} elevation={1}>
+                <TextField label="Company" value={company} />
+              </Paper>
+              <Paper className={classes.root} elevation={1}>
+                <Typography variant="h5" component="h3">
+                Technologies
+                </Typography>
+              </Paper>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sauver les modifications
+              </Button>
+            </Paper>
+          </div>
+        )
+        
+        }
+      }
+    </Query>
+  );
+
   return (
     <AuthContext>
-      {({ signOut }) => (
-        <div className={classes.container}>
-          <Paper className={classes.root} elevation={1}>
-            <Paper className={classes.root} elevation={1}>
-              <Typography variant="h5" component="h3"> 
-              Mon Profil
-              </Typography>
-            </Paper>
-            <Paper className={classes.root} elevation={1}>
-              <TextField label="Username" value="wwk" />            
-            </Paper>
-            <Paper className={classes.root} elevation={1}>
-              <TextField label="First Name" value="wwk" />
-            </Paper>
-            <Paper className={classes.root} elevation={1}>
-              <TextField label="Last Name" value="wwk" />
-            </Paper>
-            <Paper className={classes.root} elevation={1}>
-              <TextField label="Email" value="wwk" />
-            </Paper>
-            <Paper className={classes.root} elevation={1}>
-              <TextField label="Company" value="wwk" />
-            </Paper>
-            <Paper className={classes.root} elevation={1}>
-              <Typography variant="h5" component="h3">
-              Technologies
-              </Typography>
-            </Paper>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sauver les modifications
-            </Button>
-          </Paper>
-        </div>
-      )}
-      </AuthContext>
-  );
+      {({ signOut }) => {
+        return profilRecuperation();
+
+      }}
+    </AuthContext>
+  )
 }
+
+const profil = gql`
+query {
+  me{
+    firstName,
+    lastName,
+    email,
+    company,
+
+  }
+}
+`;
 
 ProfilPage.propTypes = {
   classes: PropTypes.object.isRequired,
