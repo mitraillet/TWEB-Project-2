@@ -14,7 +14,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
       <AuthContext>
         {({user}) => user
           ? <Component {...params} />
-          : <Redirect to="/login" />}
+          : <Redirect to={"/login?fromUrl="+ params.location.pathname }/>}
       </AuthContext>
   )}
   />

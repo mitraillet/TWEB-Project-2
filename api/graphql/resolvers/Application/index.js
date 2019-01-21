@@ -100,7 +100,7 @@ export default {
             return await User.findById(user);
         },
         project: async ({project}, args, context, info) => {
-            return await Project.findById({project});
+            return await Project.findById(project);
         },
         messages: async ({_id}, args, context, info) => {
             return await Message.find({application: _id});

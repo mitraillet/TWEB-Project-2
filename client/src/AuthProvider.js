@@ -50,7 +50,7 @@ class AuthProvider extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children } = this.props;
     return (
       <AuthContextProvider value={this.state}>
         {children}
@@ -66,6 +66,10 @@ const loginMutation = gql`
       lastName
       email
       company
+      projectsProposed { 
+      	applications { _id }
+      }
+      applications { _id }
     }
   }
 `;
