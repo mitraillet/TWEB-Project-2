@@ -93,7 +93,7 @@ function MyProjects(props) {
             {projects}
             
             <Paper className={classes.title} elevation={1}>
-              <NavLink to='/SubmitProject'>
+              <NavLink to='/submitProject'>
                 <Typography className={classes.root2}  variant="h5" component="h3">
                    Nouveau projet
                 </Typography>
