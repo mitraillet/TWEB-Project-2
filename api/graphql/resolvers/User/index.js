@@ -11,7 +11,6 @@ export default {
   EmailAddress,
   Query: {
     me: (_, __, { req }) => {
-      console.log(req.session.userId);
       if (req.session.userId) {
         return User.findOne({email: req.session.userId})
       }
