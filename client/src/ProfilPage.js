@@ -8,7 +8,7 @@ import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 
 const styles = theme => ({
   root: {
@@ -30,8 +30,35 @@ const styles = theme => ({
   },
 });
 
+
 function ProfilPage(props) {
   const { classes } = props;
+
+  const updateProfile = (_id, user) => {
+    return (
+      <Mutation mutation={profilMutation}>
+        {(updateUser, { data }) => (
+        
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={
+              (e) => {
+                e.preventDefault();
+                updateUser({ variables: { _id, user}})
+              }
+            }
+          >
+            Sauver les modifications
+          </Button>
+        )
+        }
+      </Mutation>
+    );
+  };
 
   const profilRecuperation = () => (
     <Query
@@ -52,7 +79,6 @@ function ProfilPage(props) {
           mail = data.me.email;
         if(data.me.company)
           company = data.me.company;
-
         return (
           <div className={classes.container}>
             <Paper className={classes.root} elevation={1}>
@@ -78,15 +104,20 @@ function ProfilPage(props) {
                 Technologies
                 </Typography>
               </Paper>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sauver les modifications
-              </Button>
+              
+              
+              {/*
+
+                Pour l'instant marche pas, il faut pourvoir récup l'_id
+
+                updateProfile(data.me._id, {
+                  firstName: firstName,
+                  lastName: lastName,
+                  email: mail,
+                  company: company
+                  }) 
+                */}
+              
             </Paper>
           </div>
         )
@@ -116,6 +147,15 @@ query {
 
   }
 }
+`;
+
+const profilMutation = gql`
+  mutation($_id: String!,$user: UpdateUserInput!) {
+    updateUser(_id: $_id, user: $user) {
+      firstName,
+      lastName
+    }
+  }
 `;
 
 ProfilPage.propTypes = {
