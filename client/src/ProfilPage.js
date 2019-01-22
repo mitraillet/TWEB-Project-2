@@ -47,11 +47,6 @@ state = {
   email: ""
 }
 
-setLast(last) {
-  console.log(last)
-  this.setState({lastName:last, set: true})
-}
-
 ProfilPage() {
   const { classes } = this.props;
 
