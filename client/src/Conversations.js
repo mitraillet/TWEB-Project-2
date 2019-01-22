@@ -5,6 +5,8 @@ import gql from 'graphql-tag';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Query } from 'react-apollo';
+import { graphql, withApollo, compose } from 'react-apollo';
+import {Link} from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -45,28 +47,31 @@ function Conversations(props) {
       {({ data, loading }) => {
         if (loading) return null;
 
-        console.log(data)
         let porpositionMessages = null ;
         let applicationMessages = null ;
         if (data.me.applications) { 
           applicationMessages = data.me.applications.map(application => {
             return ( 
-              <Paper className={classes.root} elevation={1} key={application.project._id}>
-                <Typography variant="h5" component="h3"> 
-                  {application.project.name}
-                </Typography>
-              </Paper>
+              <Link to={'/messages/' + application._id} key={application._id}>
+                <Paper className={classes.root} elevation={1}>
+                  <Typography variant="h5" component="h3"> 
+                    {application.project.name}
+                  </Typography>
+                </Paper>
+              </Link>
             )
           })
         }
         if (data.me.projectsProposed) { 
           porpositionMessages = data.me.projectsProposed.map(project => {
             return (
-              <Paper className={classes.root} elevation={1} key={project._id}>
-                <Typography variant="h5" component="h3"> 
-                  {project.name}
-                </Typography>
-              </Paper>
+              <Link to={'/messages/' + project.application._id} key={project.application._id}>
+                <Paper className={classes.root} elevation={1}>
+                  <Typography variant="h5" component="h3"> 
+                    {project.name}
+                  </Typography>
+                </Paper>
+              </Link>
               )
           })
         }
@@ -91,7 +96,6 @@ function Conversations(props) {
     <AuthContext>
       {({ user }) => {
         return conversationRecuperation({applicationId: user.applicationId});
-
       }}
     </AuthContext>
   )
@@ -100,17 +104,28 @@ function Conversations(props) {
 const conversation = gql`
 query {
   me{
-    projectsProposed { 
+    firstName
+    lastName
+    email
+    company
+    projectsProposed {
       name
-      applications { 
+      applications {  
+        _id
       messages{body} }
     }
-    applications { 
-    project{name}
+    applications {  
+      _id
+    project{
+      name}
     messages{body}
     }
   }
 }
 `;
 
-export default withStyles(styles)(Conversations);
+export default compose(
+  withApollo,
+  graphql(conversation),
+  withStyles(styles)
+  )(Conversations); 

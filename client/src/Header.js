@@ -112,7 +112,7 @@ class Header extends React.Component {
           ( <React.Fragment>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                  <IconButton color="inherit"onClick={() =>this.props.history.push('/conversations')}>
+                  <IconButton color="inherit" onClick={() =>this.props.history.push('/conversations')}>
                     <MailIcon />
                   </IconButton>
                   <IconButton color="inherit" onClick={() =>this.props.history.push('/profil')}>
@@ -182,7 +182,7 @@ class Header extends React.Component {
           <div className={classes.root}>
             <AppBar position="static">
               <Toolbar>
-                <Typography className={classes.title} variant="h3" color="inherit" noWrapc onClick={() => window.location = '/'}>
+                <Typography className={classes.title} variant="h3" color="inherit" onClick={() => window.location = '/'}>
                   <Paper className={classes.paper} elevation={1} >
                     {applicationName}
                   </Paper>

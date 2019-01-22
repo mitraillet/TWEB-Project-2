@@ -10,8 +10,7 @@ import {
 export default {
   EmailAddress,
   Query: {
-    me:  (_, __, { req }) => {
-
+    me: (_, __, { req }) => {
       if (req.session.userId) {
         return User.findOne({email: req.session.userId})
       }

@@ -6,6 +6,7 @@ import HomePage from './HomePage';
 import Conversations from './Conversations';
 import MainPage from './MainPage';
 import ProfilPage from './ProfilPage';
+import Messages from './Messages';
 import MyProjects from './MyProjectsPage'
 import RegistrationPage from './RegistrationPage';
 
@@ -29,6 +30,7 @@ export default () => (
     <ProtectedRoute path="/conversations" component={Conversations} />
     <ProtectedRoute path="/projects" component={MyProjects} />
     <ProtectedRoute path="/propositions" component={MainPage} />
+    <ProtectedRoute path="/Messages/:post_id" component={Messages} />
     <Route path="/login" component={LoginPage} />
     <Route path="/register" component={RegistrationPage} />
   </Switch>
