@@ -112,7 +112,7 @@ class MainPage extends React.Component {
             {
               //prev button
             }
-            <Paper className={classes.root}  elevation={1}>
+            <Paper className={classes.root}  >
               <Button onClick={() => this.onClickPrev(data)}>
                 <Typography variant="h5" component="h3"> 
                     Prev
