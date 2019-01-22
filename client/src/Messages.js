@@ -5,6 +5,11 @@ import gql from 'graphql-tag';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { graphql, withApollo, compose } from 'react-apollo';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Send from '@material-ui/icons/Send';
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = theme => ({
   root: {
@@ -27,11 +32,21 @@ const styles = theme => ({
       backgroundColor: '#3f51b5',
       margingBottom: theme.spacing.unit * 2,
   },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing.unit,
+  },
   container: {
     marginTop: theme.spacing.unit * 5,
     width: 500,
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  textInput: {
+    width: '80%',
+  },
+  iconButton: {
+    width: '10%',
   }
 });
 
@@ -39,9 +54,14 @@ class Messages extends Component {
 
   state = {
     titreConversation: null,
-    messagesConversation: []
+    messagesConversation: [],
+    messageContent: null
   }
   
+  onSend = () => {
+
+  }
+
   componentDidMount() {
     let id = this.props.match.params.post_id;
     this.props.client.query({
@@ -68,7 +88,11 @@ class Messages extends Component {
         </Paper>)
       )
     ) : (
-      <Paper> Loading content </Paper>
+      <Paper className={classes.root} elevation={1}>
+          <Typography variant="h5" component="h3"> 
+            Loading content...
+          </Typography>
+        </Paper>
     );
   
     return (
@@ -80,8 +104,30 @@ class Messages extends Component {
                 <Typography className={classes.root2} variant="h2" component="h2"> 
                   {this.state.titreConversation}
                 </Typography>
-              </Paper>
+            </Paper>
+
             {message}
+
+            <Paper className={classes.root} elevation={1}>
+              <form className={classes.form} onSubmit={this.onSend}>
+                  <FormControl margin="normal" required fullWidth>
+                    <InputLabel htmlFor="text">Réponse</InputLabel>
+                    <Input 
+                      id="text"
+                      name="text" 
+                      value={this.state.messageContent} 
+                      autoFocus
+                      className={classes.textInput}
+                    /> 
+                    <IconButton
+                      type="submit"
+                      color="inherit" 
+                      className={classes.iconButton}>
+                      <Send />
+                    </IconButton>
+                  </FormControl>
+                </form>
+            </Paper>
           </Paper>
         ) 
       }}
