@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { AuthContext } from './AuthProvider';
 import { withStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { Query } from 'react-apollo';
 import { graphql, withApollo, compose } from 'react-apollo';
 import {Link} from 'react-router-dom';
 
@@ -37,44 +36,63 @@ const styles = theme => ({
   }
 });
 
-function Conversations(props) {
-  const { classes } = props;
+class Conversations extends Component{
+  state = {
+    titresConversationFromApplication: [],
+    titresConversationFromProject: []
+  }
 
-  const conversationRecuperation = () => (
-    <Query
-      query={conversation}
-    >
-      {({ data, loading }) => {
-        if (loading) return null;
+  componentDidMount() {
+    this.props.client.query({
+      query: conversation,
+    }).then(({ loading, error, data }) => {
+      if (loading) return null;
+      if (error) return `Error!: ${error}`;
+      this.setState({titresConversationFromApplication:data.me.applications}); 
+      this.setState({titresConversationFromProject:data.me.projectsProposed});
+    })
+  }
 
-        let porpositionMessages = null ;
-        let applicationMessages = null ;
-        if (data.me.applications) { 
-          applicationMessages = data.me.applications.map(application => {
-            return ( 
-              <Link to={'/messages/' + application._id} key={application._id}>
-                <Paper className={classes.root} elevation={1}>
-                  <Typography variant="h5" component="h3"> 
-                    {application.project.name}
-                  </Typography>
-                </Paper>
-              </Link>
-            )
-          })
-        }
-        if (data.me.projectsProposed) { 
-          porpositionMessages = data.me.projectsProposed.map(project => {
-            return (
-              <Link to={'/messages/' + project.application._id} key={project.application._id}>
-                <Paper className={classes.root} elevation={1}>
-                  <Typography variant="h5" component="h3"> 
-                    {project.name}
-                  </Typography>
-                </Paper>
-              </Link>
-              )
-          })
-        }
+  render() {
+    const { classes } = this.props;
+    const applicationMessages = this.state.titresConversationFromApplication.length ? (
+      this.state.titresConversationFromApplication.map( application =>
+        ( 
+          <Link to={'/messages/' + application._id} key={application._id}>
+            <Paper className={classes.root} elevation={1}>
+              <Typography variant="h5" component="h3"> 
+                {application.project.name}
+              </Typography>
+            </Paper>
+          </Link>
+        )
+    )) : null;
+
+    const propositionMessages = this.state.titresConversationFromProject.length ? (
+      this.state.titresConversationFromProject.map(project => {
+        return (
+          <Link to={'/messages/' + project.application._id} key={project.application._id}>
+            <Paper className={classes.root} elevation={1}>
+              <Typography variant="h5" component="h3"> 
+                {project.name}
+              </Typography>
+            </Paper>
+          </Link>
+          )
+      }
+    )) : null;
+
+    const noMessage = (applicationMessages===null && propositionMessages === null) ? (
+        <Paper className={classes.root} elevation={1}>
+          <Typography variant="h5" component="h3"> 
+            Pas de messages...
+          </Typography>
+        </Paper>
+    ) : null;
+
+    return (
+      <AuthContext>
+      {({ user }) => {
         return (
           <Paper className={classes.container} elevation={1}>
             <Paper className={classes.title} elevation={1}>
@@ -83,22 +101,14 @@ function Conversations(props) {
                 </Typography>
               </Paper>
             {applicationMessages}
-            {porpositionMessages}
+            {propositionMessages}
+            {noMessage}
           </Paper>
-        )
-      }
-    }
-    </Query>
-  );
-
-
-  return (
-    <AuthContext>
-      {({ user }) => {
-        return conversationRecuperation({applicationId: user.applicationId});
+        );
       }}
-    </AuthContext>
-  )
+      </AuthContext>
+    );
+  }
 }
 
 const conversation = gql`

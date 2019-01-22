@@ -66,6 +66,18 @@ const loginMutation = gql`
       lastName
       email
       company
+      projectsProposed { 
+        name
+        applications { 
+          _id
+        messages{body} }
+      }
+      applications { 
+        _id
+      project{
+        name}
+      messages{body}
+      }
     }
   }
 `;
@@ -84,14 +96,14 @@ const meQuery = gql`
       email
       company
       projectsProposed { 
-        _id
         name
         applications { 
+          _id
         messages{body} }
       }
       applications { 
-      project{
         _id
+      project{
         name}
       messages{body}
       }

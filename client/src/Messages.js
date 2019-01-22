@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { graphql, withApollo, compose } from 'react-apollo';
-import {Link} from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -54,7 +53,6 @@ class Messages extends Component {
 
       this.setState({titreConversation:data.application.project.name}); 
       this.setState({messagesConversation:data.application.messages}); 
-      console.log(this.state.messagesConversation[0].body);
     })
   }
   
@@ -63,8 +61,8 @@ class Messages extends Component {
     const message = this.state.messagesConversation.length ? (
       this.state.messagesConversation.map( msg =>
       (
-        <Paper className={classes.root} elevation={1}>
-          <Typography variant="p" component="p"> 
+        <Paper className={classes.root} elevation={1} key={msg._id}>
+          <Typography variant="h6" component="h6"> 
             {msg.body}
           </Typography>
         </Paper>)
@@ -76,7 +74,6 @@ class Messages extends Component {
     return (
       <AuthContext>
       {({ user }) => {
-
         return (
           <Paper className={classes.container} elevation={1}>
             <Paper className={classes.title} elevation={1}>
@@ -97,7 +94,10 @@ const message = gql`
 query ($id: ID!){
   application (_id: $id) {
     project {name}
-    messages {body}
+    messages {
+      _id
+      body
+    }
   }
 }`;
 
