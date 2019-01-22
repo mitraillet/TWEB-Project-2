@@ -7,6 +7,8 @@ import Conversations from './Conversations';
 import MainPage from './MainPage';
 import ProfilPage from './ProfilPage';
 import Messages from './Messages';
+import MyProjects from './MyProjectsPage'
+import RegistrationPage from './RegistrationPage';
 
 // Suppress it when it's finish and protected route is reasign
 // eslint-disable-next-line
@@ -26,11 +28,11 @@ export default () => (
     <ProtectedRoute path="/" exact component={HomePage} />
     <ProtectedRoute path="/profil" component={ProfilPage} />
     <ProtectedRoute path="/conversations" component={Conversations} />
-    <ProtectedRoute path="/projects" component={LoginPage} />
+    <ProtectedRoute path="/projects" component={MyProjects} />
     <ProtectedRoute path="/propositions" component={MainPage} />
     <ProtectedRoute path="/Messages/:post_id" component={Messages} />
     <Route path="/login" component={LoginPage} />
-    <Route path="/register" component={LoginPage} />
+    <Route path="/register" component={RegistrationPage} />
   </Switch>
 );
 // ProtectedRoute

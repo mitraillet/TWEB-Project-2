@@ -60,7 +60,8 @@ export default {
         });
       });
     },
-    updateUser: async (parent, { _id, user }, { req }, info) => {
+    updateUser: async (parent, {_id, user }, { req }, info) => {
+      console.log(req.session.userId);
       if (req.session.userId) {
         return new Promise((resolve, reject) => {
           User.findByIdAndUpdate(_id, {$set: {...user}}, {new: true}).exec(
@@ -72,7 +73,7 @@ export default {
       }
       else
       {
-        throw new Error('You must be logged in to perform this action');
+        throw new Error('You must be logged in to update a user');
       }
     },
     deleteUser: async (parent, { _id }, { req }, info) => {
