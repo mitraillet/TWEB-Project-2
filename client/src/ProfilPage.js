@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
+import { flattenSelections } from 'apollo-utilities';
 
 const styles = theme => ({
   root: {
@@ -31,8 +32,28 @@ const styles = theme => ({
 });
 
 
-function ProfilPage(props) {
-  const { classes } = props;
+class ProfilPage  extends React.Component {
+
+constructor(props) {
+  super(props)
+  this.ProfilPage.bind(this)
+}
+
+state = {
+  set: false,
+  lastName: "",
+  firstName: "",
+  company: "",
+  email: ""
+}
+
+setLast(last) {
+  console.log(last)
+  this.setState({lastName:last, set: true})
+}
+
+ProfilPage() {
+  const { classes } = this.props;
 
   const updateProfile = (_id, user) => {
     return (
@@ -67,18 +88,16 @@ function ProfilPage(props) {
       {({ data, loading }) => {
         if (loading) return <p>Loading...</p>;
 
-        let firstName = "...";
-        let mail = "...";
-        let lastName = "...";
-        let company = "...";
-        if(data.me.firstName)
-          firstName = data.me.firstName;
-        if(data.me.lastName)
-          lastName = data.me.lastName;
-        if(data.me.email)
-          mail = data.me.email;
-        if(data.me.company)
-          company = data.me.company;
+        if(!this.state.set && data.me.firstName && data.me.lastName && data.me.email && data.me.company)
+          this.setState({
+            lastName: data.me.lastName,
+            firstName: data.me.firstName,
+            email: data.me.email,
+            company: data.me.company,
+            set: true
+          })
+        
+
         return (
           <div className={classes.container}>
             <Paper className={classes.root} elevation={1}>
@@ -88,35 +107,27 @@ function ProfilPage(props) {
                 </Typography>
               </Paper>
               <Paper className={classes.root} elevation={1}>
-                <TextField label="First Name" value={firstName} />
+                <TextField label={"First Name : "+this.state.firstName} onChange={e => this.setState({firstname:e.target.value})} />
               </Paper>
               <Paper className={classes.root} elevation={1}>
-                <TextField label="Last Name" value={lastName} />
+                <TextField label={"Last Name : "+this.state.lastName} onChange={e => this.setState({lastName:e.target.value})}/>
               </Paper>
               <Paper className={classes.root} elevation={1}>
-                <TextField label="Email" value={mail} />
+                <TextField label={"Email : "+this.state.email} onChange={e => this.setState({email:e.target.value})}/>
               </Paper>
               <Paper className={classes.root} elevation={1}>
-                <TextField label="Company" value={company} />
-              </Paper>
-              <Paper className={classes.root} elevation={1}>
-                <Typography variant="h5" component="h3">
-                Technologies
-                </Typography>
+                <TextField label={"Company : "+this.state.company} onChange={e => this.setState({company:e.target.value})} />
               </Paper>
               
-              
-              {/*
+              {
 
-                Pour l'instant marche pas, il faut pourvoir récup l'_id
-
-                updateProfile(data.me._id, {
-                  firstName: firstName,
-                  lastName: lastName,
-                  email: mail,
-                  company: company
+                updateProfile(data.users.filter( e => {return e.email === data.me.email})[0]._id, {
+                  firstName: this.state.firstName,
+                  lastName:  this.state.lastName,
+                  email: this.state.email,
+                  company: this.state.company
                   }) 
-                */}
+                }
               
             </Paper>
           </div>
@@ -137,6 +148,12 @@ function ProfilPage(props) {
   )
 }
 
+render() {
+  return this.ProfilPage();
+}
+
+}
+
 const profil = gql`
 query {
   me{
@@ -145,6 +162,10 @@ query {
     email,
     company,
 
+  },
+  users{
+    email,
+    _id
   }
 }
 `;

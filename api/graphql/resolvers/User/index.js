@@ -62,7 +62,7 @@ export default {
       });
     },
     updateUser: async (parent, {_id, user }, { req }, info) => {
-      console.log(req.session.userId);
+      console.log(user.lastName);
       if (req.session.userId) {
         return new Promise((resolve, reject) => {
           User.findByIdAndUpdate(_id, {$set: {...user}}, {new: true}).exec(

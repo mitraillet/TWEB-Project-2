@@ -47,8 +47,9 @@ function RegistrationPage(props) {
       <Mutation mutation={registrationMutation}>
         {(createUser, { data }) => (
         
+      
 
-          
+
 
           <Button
             type="submit"
