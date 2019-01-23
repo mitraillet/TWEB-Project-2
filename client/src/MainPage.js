@@ -254,14 +254,6 @@ query {
 }
 `;
 
-const test = gql`
-query {
-  me{
-    firstName
-  }
-}
-`;
-
 MainPage.propTypes = {
   classes: PropTypes.object.isRequired,
 };

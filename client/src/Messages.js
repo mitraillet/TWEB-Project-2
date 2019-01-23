@@ -9,7 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Send from '@material-ui/icons/Send';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -53,17 +53,36 @@ const styles = theme => ({
 class Messages extends Component {
 
   state = {
+    idConversation: null,
     titreConversation: null,
     messagesConversation: [],
-    messageContent: null
+    messageContent: null,
+    messageSubject: null,
+    userId: null
   }
   
-  onSend = () => {
+  onSend = (e) => {
+    e.preventDefault();
+    let messageToSend = {
+      sender: this.state.userId,
+      application: this.state.idConversation,
+      subject: this.state.messageSubject,
+      body: this.state.messageContent,
+      date: new Date(),
+    }
 
+    console.log(messageToSend)
+    this.props.sendMessage({
+      variables: {message: messageToSend },
+    }).then(() => {
+      window.location.reload();
+      })
   }
 
   componentDidMount() {
     let id = this.props.match.params.post_id;
+    this.setState({idConversation: this.props.match.params.post_id});
+
     this.props.client.query({
       query: message,
       variables: {id: id},
@@ -72,21 +91,22 @@ class Messages extends Component {
       if (error) return `Error!: ${error}`;
 
       this.setState({titreConversation:data.application.project.name}); 
-      this.setState({messagesConversation:data.application.messages}); 
+      this.setState({messagesConversation:data.application.messages});
     })
   }
   
   render() {
     const { classes } = this.props;
     const message = this.state.messagesConversation.length ? (
-      this.state.messagesConversation.map( msg =>
-      (
+      this.state.messagesConversation.map( msg => {
+        if(this.state.messageSubject == null) this.setState({messageSubject: msg.subject});
+      return (
         <Paper className={classes.root} elevation={1} key={msg._id}>
           <Typography variant="h6" component="h6"> 
             {msg.body}
           </Typography>
         </Paper>)
-      )
+      })
     ) : (
       <Paper className={classes.root} elevation={1}>
           <Typography variant="h5" component="h3"> 
@@ -98,6 +118,10 @@ class Messages extends Component {
     return (
       <AuthContext>
       {({ user }) => {
+        if(this.state.userId == null) {
+          this.setState({userId: user._id})
+          console.log(user)
+          };
         return (
           <Paper className={classes.container} elevation={1}>
             <Paper className={classes.title} elevation={1}>
@@ -118,13 +142,14 @@ class Messages extends Component {
                       value={this.state.messageContent} 
                       autoFocus
                       className={classes.textInput}
+                      onChange={e => this.setState({messageContent:e.target.value})}
                     /> 
-                    <IconButton
+                    <Button
                       type="submit"
                       color="inherit" 
                       className={classes.iconButton}>
                       <Send />
-                    </IconButton>
+                    </Button>
                   </FormControl>
                 </form>
             </Paper>
@@ -142,13 +167,27 @@ query ($id: ID!){
     project {name}
     messages {
       _id
+      sender { _id }
       body
+      subject
     }
+  }
+}`;
+
+const sendMessage = gql`
+mutation($message: CreateMessageInput){
+  createMessage(message: $message){
+    _id
+    sender { _id }
+    subject
+    body
+    date
   }
 }`;
 
 export default compose(
 withApollo,
 graphql(message, {options: (props) => ({ variables : {id: props.match.params.post_id}})}),
+graphql(sendMessage, {name: 'sendMessage'}),
 withStyles(styles)
 )(Messages);

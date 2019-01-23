@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
-import { flattenSelections } from 'apollo-utilities';
 
 const styles = theme => ({
   root: {
