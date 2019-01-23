@@ -9,7 +9,7 @@ import schema from "../graphql/";
 import { models } from "./config/db/";
 
 const { mongoURI: db } = process.env;
-
+console.log(db);
 const pubsub = new PubSub();
 
 
