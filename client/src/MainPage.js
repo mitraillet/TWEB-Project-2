@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { NavLink, withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 
 const styles = theme => ({
   root: {
@@ -46,8 +46,10 @@ class MainPage extends React.Component {
       deadline: 'deadline',
       customer: '{firstName: firstName, lastName: lastName}',
       technologies: 'react, GraphQL',
+      _id: 'id'
     },
     technologies: 'react, GraphQL',
+    customerID: 'id',
     pageLoaded: false
   }
 
@@ -57,6 +59,7 @@ class MainPage extends React.Component {
       index: ((this.state.index > 0 ? this.state.index : data.me.projectsApplicable.length)-1 ) % data.me.projectsApplicable.length,
       project: data.me.projectsApplicable[this.state.index],
       technologies: this.state.project.technologies,
+      customerID: data.users.filter( e => {return e.email === data.me.email})[0]._id,
       pageLoaded: true
     });
   }
@@ -67,13 +70,51 @@ class MainPage extends React.Component {
       index: (this.state.index +1 ) % data.me.projectsApplicable.length,
       project: data.me.projectsApplicable[this.state.index],
       technologies: this.state.project.technologies,
+      customerID: data.users.filter( e => {return e.email === data.me.email})[0]._id,
       pageLoaded: true
     });
   }
 
 
+
   mainPage() {
     const { classes } = this.props;
+
+    const buttonApplication = () => {
+      return (
+        <Mutation mutation={applicationMutation}>
+          {(createApplication, { data }) => (
+            <Paper className={classes.root} elevation={1}>
+              <Button type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={
+                    (e) => {
+                      e.preventDefault();
+                      const application = {
+                        user: this.state.customerID,
+                        project: this.state.project._id,
+                        status: "Proposed"
+                      }
+                      if(true) {
+                        console.log(this.state.customerID)
+                        console.log(this.state.project._id)
+                        createApplication({ variables: { application }})
+                        window.location= '/';
+                      }
+                    }
+                  }>
+                <Typography variant="h5" component="h3">
+                  Postuler
+                </Typography>
+              </Button>
+            </Paper>
+          )}
+        </Mutation>
+      );
+    }
 
     const projectsListRecuperation = () => (
       <Query
@@ -192,15 +233,8 @@ class MainPage extends React.Component {
 
               {//last button
               }
-              <Paper className={classes.root} elevation={1}>
-                  <NavLink to='/'>
-                  <Typography variant="h5" component="h3">
-                      Entrer en relation
-                  </Typography>
-                  </NavLink>
+              {buttonApplication()}
               </Paper>
-            </Paper>
-
             {
               //next button
             }
@@ -237,6 +271,7 @@ class MainPage extends React.Component {
 const projectsList = gql`
 query {
   me{
+    email,
     projectsApplicable{
         name,
         amount,
@@ -244,23 +279,29 @@ query {
         timeEstimated,
         status,
         deadline,
+        _id,
         customer {
           firstName,
           lastName
         },
         technologies
     }
+  },
+  users{
+    email,
+    _id
   }
 }
 `;
 
-const test = gql`
-query {
-  me{
-    firstName
+const applicationMutation = gql`
+  mutation($application: CreateApplicationInput!) {
+    createApplication(application: $application) {
+      _id
+    }
   }
-}
 `;
+
 
 MainPage.propTypes = {
   classes: PropTypes.object.isRequired,
