@@ -100,13 +100,16 @@ Et de communiquer avec le créateur:
 
 * Heroku et Now pour le déploiement
 
-
 ## API
 
 ## requêtes et données
 
 ## Déploiement
 
+Nous avons utiliser Heroku pour déployer le front-end et Now pour le back-end. Atlas est utiliser pour héberger la base de données
+
 ## auto-évaluation
+
+Un grand manque de finition à cause d'un manque de temps. Les fonctionalités sont implémentées mais des bugs sont toujours présents
 
 ## Tests
