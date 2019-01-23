@@ -102,7 +102,9 @@ Et de communiquer avec le créateur:
 
 ## API
 
-## requêtes et données
+Utilisation d'un cookie de session pour l'authentification.
+https://graphql-mongodb-server-ktmxlhhwyg.now.sh/playground
+Qui permet d'avoir accès à tout les endpoints de graphql
 
 ## Déploiement
 
@@ -110,6 +112,12 @@ Nous avons utiliser Heroku pour déployer le front-end et Now pour le back-end. 
 
 ## auto-évaluation
 
-Un grand manque de finition à cause d'un manque de temps. Les fonctionalités sont implémentées mais des bugs sont toujours présents
+Un grand manque de finition à cause d'un manque de temps. Les fonctionalités sont implémentées mais des bugs sont toujours présents.
 
 ## Tests
+
+Attention des bugs sont bien présents des pages se chargent normalement un coup sur deux.
+
+## Credential
+s.h@tweb.ch
+pass
