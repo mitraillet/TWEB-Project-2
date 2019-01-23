@@ -1,48 +1,110 @@
-# Authentication
+# TinDev - Projet TWEB 2019
 
-This project is an example of how to setup authentication and authorization into an express and react app. 
+Auteurs: Besseau Thibaud, Henriquet Steve, Schürch Loïc
 
-if you prefer a step-by-step guide, you  can watch the following video tutorials:
+## TinDev
 
-- [Authentication (1) : Setup Express.js](https://youtu.be/ah_1BavtnGw)
-- [Authentication (2): Node.js and jsonwebtoken](https://youtu.be/GglTvLVFXDU)
-- [Authentication (3): Passport.js](https://youtu.be/ZI2AJ8p89V8)
-- [Authentication (4): React.js](https://youtu.be/9xmr9ubR0h4)
+TinDev est une plateforme de proposition de projet pour développeur.
 
+Elle propose à tout utilisateur de mettre en ligne une proposition de projet. Tous les autres utilisateurs pourront voir la proposition et engager la conversation.
 
+Un utilisateur peut modifier son profil et a accès aux conversations liées aux projets auxquels il a postulé.
 
+Un projet sera accompagné d'une description,
 
+## Utilisation en local
 
-## Quick start
+Ce projet contient deux applications séparé
 
-This project contains to seperated applications 
+- `/client` - Un projet React pour le Front-end
 
-- `/client` - A React project bootstrap with create-react-app
-
-- `/api` - An express.js API server
-
-
-### Set up
-
-1. Use the following command to Install the `/api` and `/client` packages 
-
-```
-cd ./api && yarn install
-cd ./client && yarn install
-```
-
-2. Set local environment configuration in a `.env ` file.
+- `/api` - Une API expressJS pour le Back-end
 
 
+### Set up local
 
-### Run the App
+1. Installer les dépendances nécéssaire avec les commandes suivantes:
 
-1. Start the api by running the following  
-
-```
-cd ./api && yarn dev
-cd ./client && yarn start
+  ```
+cd ./api && npm install
+cd ./client && npm install
 ```
 
+2. Il faut aussi définir les variables d'environnement dans le fichier `.env `.
+
+### Execution en local
+
+1. Démarrer les applications avec les commandes:
+
+  ```
+cd ./api && npm dev
+cd ./client && npm start
+```
+
+2. Ouvrez votre browser préféré pour vous diriger vers le lien `http://localhost:3000`
 
 
+## Utilisation en ligne
+
+L'adresse de TinDev est `...`.
+
+## Utilisation de TinDev
+
+Connexion: Entrer l'adresse mail et le mot de passe
+
+![](screenshots/Capture00.PNG)
+
+Enregistrer un compte: Entrer les informations pour tous les champs. Vous devez entrer deux fois le même mot de passe
+
+![](screenshots/Capture01.PNG)
+
+Menu principal: page d'acceuil
+
+![](screenshots/Capture03.PNG)
+
+Profil: Les valeurs actuelles sont affichés, vous avez la possibilité de les modifier et de sauver les modifications
+
+![](screenshots/Capture02.PNG)
+
+Propositions: Ici vous pouvez voir tous les projets proposés par d'autre utilisateur. Leur nom, description, valeur, créateur et technologies nécéssaires sont affichées
+
+Il est possible d'accéder aux projets suivants ou précédents avec les boutons "NEXT" et "PREV"
+
+Le bouton "POSTULER" permet de vous mettre en contact avec le créateur.
+
+![](screenshots/Capture04.PNG)
+
+Mes projets: Accédez à la liste de vos projets et à la création de nouveaux projets
+
+![](screenshots/Capture05.PNG)
+
+Création de projet: Il est possible de proposer un nouveau projet en remplissant les champs:
+
+![](screenshots/Capture06.PNG)
+
+Conversation: Vous pouvez accéder aux conversations liées aux projets qui vous intéressent, il suffit de cliquer dessus
+
+![](screenshots/Capture07.PNG)
+
+Et de communiquer avec le créateur:
+
+![](screenshots/Capture08.PNG)
+
+## Choix des technologies
+
+React
+
+GraphQL
+
+NodeJS
+
+
+## API
+
+## requêtes et données
+
+## Déploiement
+
+## auto-évaluation
+
+## Tests

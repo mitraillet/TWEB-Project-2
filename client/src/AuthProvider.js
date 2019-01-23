@@ -62,6 +62,7 @@ class AuthProvider extends Component {
 const loginMutation = gql`
   mutation($email: String!, $password: String!){
     login(email: $email, password: $password){
+      _id
       firstName
       lastName
       email
@@ -91,6 +92,7 @@ const logoutMutation = gql`
 const meQuery = gql`
   query {
     me{
+      _id
       firstName
       lastName
       email
