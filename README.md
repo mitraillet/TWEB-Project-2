@@ -46,7 +46,9 @@ cd ./client && npm start
 
 ## Utilisation en ligne
 
-L'adresse de TinDev est `...`.
+L'adresse de TinDev est `https://tindevclient.herokuapp.com/`.
+
+A noter que certaines pages ne semble pas fonctionner sous `Firefox`. Il est préférable d'utiliser `Google Chrome`.
 
 ## Utilisation de TinDev
 
@@ -92,11 +94,11 @@ Et de communiquer avec le créateur:
 
 ## Choix des technologies
 
-React
+* React pour la partie front-end. Celle-ci permet une bonne modularité avec la possibilité de créer des composants.
 
-GraphQL
+* GraphQL, NodeJS et Express session pour le back-end
 
-NodeJS
+* Heroku et Now pour le déploiement
 
 
 ## API
