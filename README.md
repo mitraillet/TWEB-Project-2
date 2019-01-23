@@ -41,7 +41,7 @@ cd ./api && npm dev
 cd ./client && npm start
 ```
 
-2. Ouvrez votre browser préféré pour vous diriger vers le lien `http://localhost:3000`
+2. Ouvrez Google Chrome pour vous diriger vers le lien `http://localhost:3000`
 
 
 ## Utilisation en ligne
@@ -109,6 +109,7 @@ Qui permet d'avoir accès à tout les endpoints de graphql
 ## Déploiement
 
 Nous avons utiliser Heroku pour déployer le front-end et Now pour le back-end. Atlas est utiliser pour héberger la base de données
+Utiliser Google Chrome pour aller sur https://tindevclient.herokuapp.com/
 
 ## auto-évaluation
 
