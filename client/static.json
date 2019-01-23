@@ -5,7 +5,7 @@
   },
   "proxies": {
     "/graphql": {
-      "origin": "https://graphql-mongodb-server-mmfplaazsf.now.sh/graphql"
+      "origin": "https://graphql-mongodb-server-ktmxlhhwyg.now.sh/graphql"
     }
   }
 }
