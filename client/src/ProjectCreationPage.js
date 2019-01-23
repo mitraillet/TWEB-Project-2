@@ -158,9 +158,8 @@ class ProjectCreationPage extends React.Component {
                         customer: id
                       }
                       if(true) {
-                        console.log(id)
                         createProject({ variables: { project }})
-                        //window.location= '/projects';
+                        window.location= '/projects';
                       }
                     }
                   }
